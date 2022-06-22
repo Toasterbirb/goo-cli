@@ -1,0 +1,16 @@
+#!/bin/sh
+QUERY="$1"
+
+# Download the website content
+CONTENT=$(curl -s https://dictionary.goo.ne.jp/word/${QUERY}/)
+
+# Check if no results were found
+echo "$CONTENT" | grep -q "お探しの情報は見つかりませんでした。" && echo "No results for '$QUERY' found" && exit 0
+
+# Scrape the web content for the definitions with some magical regex and stuff
+WORD=$(echo "$CONTENT" | grep -B 1 "の解説" | head -n1 | sed 's/^[[:space:]]*//')
+DEFINITIONS=$(echo "$CONTENT" | awk '/<p class="text">/' | sed 's/^[[:space:]]*//; s/<p class="text">//; s/<a href="[A-Za-z0-9%\/#-]*">//g; s/<span class="[a-z]*">//g; s/<[a-z]*>//g; s/<\/[a-z]*>//g; /･･･/d; /^<li>/d')
+
+# Output the results
+echo "$WORD"
+echo "$DEFINITIONS"
