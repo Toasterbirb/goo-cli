@@ -3,6 +3,13 @@ CLI interface for the [goo.ne.jp](https://dictionary.goo.ne.jp/) online dictiona
 
 If any html tags show up in the output, just let me know and I'll look into it
 
+## Dependencies
+- curl
+- grep
+- sed
+- awk
+- coreutils
+
 ## Usage:
 ```sh
 ./goo [word]
